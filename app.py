@@ -4,13 +4,15 @@ import skfuzzy.control as ctrl
 import json
 import os
 from flask import Flask, render_template, request, jsonify
-import openai  
+import openai
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
 
 # Flask app
 app = Flask(__name__)
 
 # OpenAI API Key (replace with your actual key)
-openai.api_key = "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"
+openai.api_key = ""
 
 # Define fuzzy variables
 energy = ctrl.Antecedent(np.arange(0, 101, 1), 'energy')
@@ -99,34 +101,70 @@ songs = [
     }
 ]
 
+# Load the model and tokenizer
+#model_name = "meta-llama/Llama-3.2-3B-Instruct"  # Replace with your preferred model
+#tokenizer = AutoTokenizer.from_pretrained(model_name)
+#model = AutoModelForCausalLM.from_pretrained(model_name)
+
+# Move the model to GPU if available
+#device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+#model.to(device)
+
 # Function to generate ChatGPT response
 def get_chatgpt_response(song, mood_description):
-    # Create the prompt string
     prompt = (
         f"Analyze the song '{song['title']}' by {song['artist']} based on its mood ('{mood_description}'), "
         f"instrumentation, energy, tempo, and lyrical sentiment. Provide a detailed, engaging breakdown."
     )
-    
     try:
-        # Send the request to OpenAI's API with the new interface
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # or any other model you want to use
-            messages=[  # Use the `messages` field to pass in the conversation
+            model="gpt-3.5-turbo",
+            messages=[
                 {"role": "system", "content": "You are a music critic."},
                 {"role": "user", "content": prompt}
             ]
         )
-        
-        # Extract the response content
         if 'choices' in response and len(response['choices']) > 0:
-            return response['choices'][0]['message']['content']  # Corrected this line
+            return response['choices'][0]['message']['content']
         else:
             return "Sorry, I couldn't generate a response at the moment."
-    
     except Exception as e:
-        # If an error occurs during the API call
         return f"An error occurred: {str(e)}"
-    
+
+# Function to generate local LLM response
+def get_local_llm_response(song, mood_description, energy_input, tempo_input, vocals_input, instrumentation_input, melodic_input, lyrics_sentiment_input, mood_value):
+    prompt = (
+        f"Analyze the following song based on its attributes and provide a concise, engaging review (50-60 words). Follow this thought process before forming the final verdict:\n"
+        f"Step 1: Evaluate the song's core elements:\n"
+        f"- Energy (0-100): {energy_input} → What does this energy level suggest? Is it high-energy, mellow, or balanced?\n"
+        f"- Tempo (BPM): {tempo_input} → Is the pace fast, moderate, or slow? How does it contribute to the mood?\n"
+        f"- Vocals (0-10): {vocals_input} → Are they powerful, subtle, or somewhere in between?\n"
+        f"- Instrumentation (0-10): {instrumentation_input} → Is the instrumental section rich, minimal, or balanced?\n"
+        f"- Melodic Complexity (0-10): {melodic_input} → Does the melody feel intricate, repetitive, or smooth?\n"
+        f"- Lyrical Sentiment (-1 to 1): {lyrics_sentiment_input} → Is the song emotionally uplifting (+1), neutral (0), or melancholic (-1)?\n"
+        f"- Overall Mood Score (0-100): {mood_value} → How do all elements combine to define the song’s mood?\n\n"
+        f"Step 2: Final Verdict:\n"
+        f"Summarize the analysis into a 50-60 word review that highlights the song’s energy, emotion, and sound. "
+        f"Make the tone concise, engaging, and fitting for a quick review."
+    )
+    try:
+        inputs = tokenizer(prompt, return_tensors="pt").to(device)
+        outputs = model.generate(
+            inputs.input_ids,
+            attention_mask=inputs.attention_mask,
+            max_length=300,
+            temperature=1.0,
+            top_p=0.7,
+            repetition_penalty=1.5,
+            do_sample=True,
+            pad_token_id=tokenizer.eos_token_id
+        )
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        if response.startswith(prompt):
+            response = response[len(prompt):].strip()
+        return response
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
 
 # Homepage
 @app.route('/')
@@ -144,21 +182,7 @@ def chat():
     instrumentation_input = int(request.form['instrumentation'])
     melodic_input = int(request.form['melodic'])
     lyrics_sentiment_input = int(request.form['lyrics_sentiment'])
-    
-    # Validate input values
-    if not (0 <= energy_input <= 100):
-        return "Error: Energy Level must be between 0 and 100."
-    if not (0 <= tempo_input <= 100):
-        return "Error: Tempo must be between 0 and 100."
-    if not (1 <= vocals_input <= 10):
-        return "Error: Vocals Prominence must be between 1 and 10."
-    if not (1 <= instrumentation_input <= 10):
-        return "Error: Instrumentation Richness must be between 1 and 10."
-    if not (1 <= melodic_input <= 10):
-        return "Error: Melodic Quality must be between 1 and 10."
-    if lyrics_sentiment_input not in [-1, 0, 1]:
-        return "Error: Lyrics Sentiment must be -1 (Negative), 0 (Neutral), or 1 (Positive)."
-    
+
     # Find song details
     selected_song = next((song for song in songs if song["title"] == song_title), None)
 
@@ -183,41 +207,39 @@ def chat():
     fuzzy_response = (
         f"🎶 '{selected_song['title']}' by {selected_song['artist']}' is an intriguing blend of sound and emotion, "
         f"with an overall mood that feels {mood_description}. Released in {selected_song['release_year']}, this {selected_song['genre']} track is {selected_song['description'].lower()}. "
-        
         f"\n\n🎵 Energy & Tempo: The song carries an energy level of {energy_input}, making it {'gentle and introspective' if energy_input < 40 else 'vibrant and electrifying' if energy_input > 75 else 'perfectly balanced between relaxation and movement'}. "
         f"With a tempo of {tempo_input} BPM, it {'flows like a slow-burning ballad, perfect for quiet reflection' if tempo_input < 50 else 'has an infectious rhythm that keeps you engaged' if tempo_input < 80 else 'drives forward relentlessly, impossible to ignore'}. "
-        
         f"\n\n🎤 Vocals & Instrumentation: The vocals here are {'soft and intimate, drawing you in with their subtlety' if vocals_input < 4 else 'rich and expressive, adding depth and emotion' if vocals_input < 7 else 'powerful and commanding, taking center stage' if vocals_input < 10 else 'booming and dynamic, leading the entire musical experience'}. "
         f"The instrumentation is {'minimal and delicate, leaving space for emotions to breathe' if instrumentation_input < 4 else 'well-balanced, giving equal weight to every instrument' if instrumentation_input < 7 else 'lush and immersive, wrapping you in a sonic embrace' if instrumentation_input < 10 else 'orchestral and grand, creating a massive, full-bodied sound'}. "
-        
         f"\n\n🎼 Melody & Lyrical Sentiment: The melody leans towards {'subdued and experimental, designed to challenge traditional structures' if melodic_input < 4 else 'melancholic yet beautiful, weaving nostalgia into its core' if melodic_input < 7 else 'instantly memorable, with hooks that stay with you long after the song ends' if melodic_input < 10 else 'utterly euphoric, soaring to breathtaking highs'}. "
         f"The lyrics convey {'a deep sadness, carrying the weight of raw emotion' if lyrics_sentiment_input == -1 else 'a reflective neutrality, letting the listener interpret their meaning' if lyrics_sentiment_input == 0 else 'an uplifting sense of hope and joy, radiating positivity'}. "
-        
         f"\n\n🔥 Final Verdict: Whether you’re looking to {'unwind and drift into a contemplative mood' if mood_value < 40 else 'find a song that transitions effortlessly between moments of peace and energy' if mood_value < 60 else 'get lost in a wave of pure adrenaline and motion' if mood_value < 80 else 'experience a sonic explosion of exhilaration'}, "
         f"this track delivers an unforgettable experience. Press play and let the music take over! 🎧"
     )
 
-    # Generate ChatGPT response
-    chatgpt_response = get_chatgpt_response(selected_song, mood_description)
 
+    #chatgpt_response = get_local_llm_response(
+    #    selected_song, mood_description, energy_input, tempo_input, vocals_input, instrumentation_input, melodic_input, lyrics_sentiment_input, mood_value
+    #)
+    chatgpt_response = "Blinding Lights by The Weeknd is a high-energy synth-driven track with a pulsating 80 BPM rhythm. The strong vocals (8/10) and retro instrumentation (8/10) create a nostalgic yet exhilarating feel. With passionate lyrics (+1 sentiment), this song perfectly matches a lively, adventurous mood (60/100)—great for night drives and dance floors. 🎶✨"
     return render_template('index.html', response_fuzzy=fuzzy_response, response_gpt=chatgpt_response, songs=songs, selected_song=selected_song)
 
-# Save user ratings
-@app.route('/rate', methods=['POST'])
-def rate():
+# Save user feedback
+@app.route('/feedback', methods=['POST'])
+def feedback():
     try:
         data = request.json
-        if not os.path.exists("ratings.json"):
-            with open("ratings.json", "w") as f:
+        if not os.path.exists("feedback.json"):
+            with open("feedback.json", "w") as f:
                 json.dump([], f)
 
-        with open("ratings.json", "r+") as f:
-            ratings = json.load(f)
-            ratings.append(data)
+        with open("feedback.json", "r+") as f:
+            feedback_data = json.load(f)
+            feedback_data.append(data)
             f.seek(0)
-            json.dump(ratings, f, indent=4)
+            json.dump(feedback_data, f, indent=4)
 
-        return jsonify({"message": "Rating saved successfully"}), 200
+        return jsonify({"message": "Feedback saved successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

@@ -71,6 +71,17 @@
       margin-top: 0;
       color: #333;
     }
+    #feedback-form {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    #feedback-form h3 {
+      margin-top: 0;
+      color: #4a90e2;
+    }
   </style>
 </head>
 <body>
@@ -111,17 +122,139 @@
 
     {% if response_fuzzy %}
     <div class="response">
-      <h2>Fuzzy Chatbot Response for "{{ selected_song['title'] }}" by {{ selected_song['artist'] }}:</h2>
+      <h2>Fuzzy Logic Chatbot Response for "{{ selected_song['title'] }}" by {{ selected_song['artist'] }}:</h2>
       <p>{{ response_fuzzy }}</p>
+      <div id="feedback-form-fuzzy">
+        <h3>Feedback for Fuzzy Logic Chatbot</h3>
+        <form id="feedbackFormFuzzy">
+          <label for="clarity_fuzzy">How clear was the reasoning behind the chatbot's response?</label>
+          <select id="clarity_fuzzy" name="clarity">
+            <option value="1">1 (Very unclear)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 (Very clear)</option>
+          </select><br><br>
+
+          <label for="satisfaction_fuzzy">How satisfied were you with the chatbot’s feedback?</label>
+          <select id="satisfaction_fuzzy" name="satisfaction">
+            <option value="1">1 (Very unsatisfied)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 (Very satisfied)</option>
+          </select><br><br>
+
+          <label for="engagement_fuzzy">How engaging was the chatbot?</label>
+          <select id="engagement_fuzzy" name="engagement">
+            <option value="1">1 (Not engaging at all)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 (Very engaging)</option>
+          </select><br><br>
+
+          <button type="submit">Submit Feedback</button>
+        </form>
+      </div>
     </div>
     {% endif %}
 
     {% if response_gpt %}
     <div class="response">
-      <h2>ChatGPT Response for "{{ selected_song['title'] }}" by {{ selected_song['artist'] }}:</h2>
+      <h2>Generative AI Chatbot Response for "{{ selected_song['title'] }}" by {{ selected_song['artist'] }}:</h2>
       <p>{{ response_gpt }}</p>
+      <div id="feedback-form-llm">
+        <h3>Feedback for Generative AI Chatbot</h3>
+        <form id="feedbackFormLLM">
+          <label for="clarity_llm">How clear was the reasoning behind the chatbot's response?</label>
+          <select id="clarity_llm" name="clarity">
+            <option value="1">1 (Very unclear)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 (Very clear)</option>
+          </select><br><br>
+
+          <label for="satisfaction_llm">How satisfied were you with the chatbot’s feedback?</label>
+          <select id="satisfaction_llm" name="satisfaction">
+            <option value="1">1 (Very unsatisfied)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 (Very satisfied)</option>
+          </select><br><br>
+
+          <label for="engagement_llm">How engaging was the chatbot?</label>
+          <select id="engagement_llm" name="engagement">
+            <option value="1">1 (Not engaging at all)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 (Very engaging)</option>
+          </select><br><br>
+
+          <button type="submit">Submit Feedback</button>
+        </form>
+      </div>
     </div>
     {% endif %}
   </div>
+
+  <script>
+    // Handle feedback submission for Fuzzy Logic Chatbot
+    document.getElementById('feedbackFormFuzzy').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const feedbackData = {
+        clarity: document.getElementById('clarity_fuzzy').value,
+        satisfaction: document.getElementById('satisfaction_fuzzy').value,
+        engagement: document.getElementById('engagement_fuzzy').value,
+        chatbot_type: "fuzzy_logic"
+      };
+
+      fetch('/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(feedbackData),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+
+    // Handle feedback submission for Generative AI Chatbot
+    document.getElementById('feedbackFormLLM').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const feedbackData = {
+        clarity: document.getElementById('clarity_llm').value,
+        satisfaction: document.getElementById('satisfaction_llm').value,
+        engagement: document.getElementById('engagement_llm').value,
+        chatbot_type: "generative_ai"
+      };
+
+      fetch('/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(feedbackData),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
 </body>
 </html>

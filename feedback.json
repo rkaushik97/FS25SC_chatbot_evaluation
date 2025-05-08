@@ -1,0 +1,44 @@
+[
+    {
+        "clarity": "5",
+        "satisfaction": "4",
+        "engagement": "3",
+        "chatbot_type": "fuzzy_logic"
+    },
+    {
+        "clarity": "5",
+        "satisfaction": "5",
+        "engagement": "4",
+        "chatbot_type": "fuzzy_logic"
+    },
+    {
+        "clarity": "3",
+        "satisfaction": "4",
+        "engagement": "5",
+        "chatbot_type": "generative_ai"
+    },
+    {
+        "clarity": "3",
+        "satisfaction": "3",
+        "engagement": "5",
+        "chatbot_type": "fuzzy_logic"
+    },
+    {
+        "clarity": "3",
+        "satisfaction": "3",
+        "engagement": "4",
+        "chatbot_type": "generative_ai"
+    },
+    {
+        "clarity": "5",
+        "satisfaction": "4",
+        "engagement": "4",
+        "chatbot_type": "fuzzy_logic"
+    },
+    {
+        "clarity": "4",
+        "satisfaction": "3",
+        "engagement": "4",
+        "chatbot_type": "generative_ai"
+    }
+]
