@@ -1,0 +1,290 @@
+[
+    {
+        "user_input": {
+            "energy": 6,
+            "tempo": 38,
+            "vocals": 5,
+            "instrumentation": 5,
+            "melodic": 0,
+            "lyrics_sentiment": 1
+        },
+        "fuzzy_logic_response": "'Uptown Funk' by Mark Ronson feat. Bruno Mars feels neutral overall . this track, released in 2014, encourages dancing and having a good time . a harshly subdued mix of sound and sentiment, this track captures a neutral vibe that's perfect for those seeking motivation.",
+        "llm_response": "Intentionally hypnotic, the song benefits from the energetic vocals of Bruno Mars and upbeat Instrumentation provides a musical backdrop for the song's lyrics",
+        "fuzzy_logic_feedback": {
+            "clarity": "4",
+            "satisfaction": "5",
+            "engagement": "1",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "2",
+            "satisfaction": "5",
+            "engagement": "1",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 89,
+            "tempo": 43,
+            "vocals": 7,
+            "instrumentation": 2,
+            "melodic": 9,
+            "lyrics_sentiment": 0
+        },
+        "fuzzy_logic_response": "'Bohemian Rhapsody' by queen feels neutral overall . released in 1975, this rock track captures a neutral vibe . a harshly subdued mix of sound and sentiment .",
+        "llm_response": "The song's overall feel is unnerving and emotional, with lyrics that are ultimately melancholy and melancholic.",
+        "fuzzy_logic_feedback": {
+            "clarity": "3",
+            "satisfaction": "2",
+            "engagement": "1",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "5",
+            "satisfaction": "1",
+            "engagement": "4",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 33,
+            "tempo": 51,
+            "vocals": 9,
+            "instrumentation": 3,
+            "melodic": 4,
+            "lyrics_sentiment": 0
+        },
+        "fuzzy_logic_response": "'Shape of You' by Ed Sheeran is a danceable pop track with catchy lyrics and a memorable melody . a harshly subdued mix of sound and sentiment, this track captures a calm vibe that's perfect for those seeking relaxation .",
+        "llm_response": "The song Shape of You has a high energy level. The vocals are solid and the instrumentation is palatable. The melody is simple, with a hint of complexity. The lyrics are uplifting but not rousing.",
+        "fuzzy_logic_feedback": {
+            "clarity": "1",
+            "satisfaction": "4",
+            "engagement": "5",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "3",
+            "satisfaction": "4",
+            "engagement": "3",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 78,
+            "tempo": 5,
+            "vocals": 2,
+            "instrumentation": 8,
+            "melodic": 2,
+            "lyrics_sentiment": 1
+        },
+        "fuzzy_logic_response": "'Hurt' by Nine Inch Nails is a dark and haunting track that explores themes of despair and self-reflection . the track, released in 1994, captures a neutral vibe that's perfect for those seeking motivation .",
+        "llm_response": "Its mood is melancholy, but also uplifting and meditative.",
+        "fuzzy_logic_feedback": {
+            "clarity": "4",
+            "satisfaction": "2",
+            "engagement": "1",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "4",
+            "satisfaction": "2",
+            "engagement": "1",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 70,
+            "tempo": 83,
+            "vocals": 6,
+            "instrumentation": 4,
+            "melodic": 6,
+            "lyrics_sentiment": -1
+        },
+        "fuzzy_logic_response": "'Rolling in the Deep' by Adele feels neutral overall . a harshly subdued mix of sound and sentiment, this track captures a neutral vibe that's perfect for those seeking motivation . the track was released in 2010 .",
+        "llm_response": "'Rolling in the Deep' is a soulful song with powerful vocals and lyrics that are melancholic. The song is melodically complex and has a slow, steady rhythm that keeps the song moving along.",
+        "fuzzy_logic_feedback": {
+            "clarity": "5",
+            "satisfaction": "1",
+            "engagement": "3",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "4",
+            "satisfaction": "4",
+            "engagement": "5",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 35,
+            "tempo": 46,
+            "vocals": 6,
+            "instrumentation": 10,
+            "melodic": 5,
+            "lyrics_sentiment": 1
+        },
+        "fuzzy_logic_response": "'Rolling in the Deep' by Adele feels neutral overall . a harshly subdued mix of sound and sentiment, this track captures a neutral vibe that's perfect for those seeking motivation . the track was released in 2010 .",
+        "llm_response": "Rolling in the Deep by Adele is a soulful track with deep, powerful vocals and emotional lyrics. Its energetic and soulful tone helps to create a feel of emotional and hopeful.",
+        "fuzzy_logic_feedback": {
+            "clarity": "2",
+            "satisfaction": "5",
+            "engagement": "3",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "4",
+            "satisfaction": "3",
+            "engagement": "5",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 79,
+            "tempo": 34,
+            "vocals": 0,
+            "instrumentation": 7,
+            "melodic": 9,
+            "lyrics_sentiment": 0
+        },
+        "fuzzy_logic_response": "'Old Town Road' by Lil Nas X feels neutral overall . this track, released in 2018, is a catchy fusion of country and rap with a viral hook . a harshly subdued mix of sound and sentiment, this track captures a neutral vibe .",
+        "llm_response": "The tempo is fast, the instrumentation sparse, and the lyrics are inane.",
+        "fuzzy_logic_feedback": {
+            "clarity": "3",
+            "satisfaction": "5",
+            "engagement": "2",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "3",
+            "satisfaction": "2",
+            "engagement": "1",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 25,
+            "tempo": 32,
+            "vocals": 10,
+            "instrumentation": 7,
+            "melodic": 7,
+            "lyrics_sentiment": 0
+        },
+        "fuzzy_logic_response": "'Imagine' by John Lennon is a hopeful anthem calling for world peace and unity . a harshly subdued mix of sound and sentiment, this track captures a neutral vibe that's perfect for those seeking motivation .",
+        "llm_response": "The song's energy is 25. This means the song has a good mix of pace and intensity. The song has an abundance of instrumentation, making it difficult to listen to the lyrics. The instrumentation, while sparse, contributes to the song's uplifting feel. The song has a tempo that feels off-kilter. It's also a mix of instrumentality and vocals, so the overall score is mellow. The song has an understated lyrical message, which doesn't take itself seriously.",
+        "fuzzy_logic_feedback": {
+            "clarity": "3",
+            "satisfaction": "1",
+            "engagement": "3",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "5",
+            "satisfaction": "1",
+            "engagement": "1",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 0,
+            "tempo": 92,
+            "vocals": 4,
+            "instrumentation": 1,
+            "melodic": 5,
+            "lyrics_sentiment": 1
+        },
+        "fuzzy_logic_response": "'Blinding Lights' by The Weeknd is a high-energy synthwave track with a retro vibe . a harshly subdued mix of sound and sentiment, this track captures a neutral vibe that's perfect for those seeking motivation .",
+        "llm_response": "The Weeknd's vocals are crisp and clear throughout Blinding Lights, which is a welcome change from the usual synth-driven track. It's an emotional song with a nostalgic resemblance to the band's 1970s work. The song is energetic, but not enough to make it feel like a rock-and-roll dance-hall jam.",
+        "fuzzy_logic_feedback": {
+            "clarity": "1",
+            "satisfaction": "2",
+            "engagement": "4",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "2",
+            "satisfaction": "1",
+            "engagement": "3",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 47,
+            "tempo": 3,
+            "vocals": 2,
+            "instrumentation": 6,
+            "melodic": 2,
+            "lyrics_sentiment": 0
+        },
+        "fuzzy_logic_response": "'Smells Like Teen Spirit' by Nirvana is a defining track of the grunge movement with raw energy and angst . the track, released in 1991, captures a calm vibe that's perfect for those seeking relaxation .",
+        "llm_response": "A strong track, Smells Like Teen Spirit is a classic example of grunge with a rich instrumentation and vocals. The song has a relaxed feel to it, and its musical arrangement is simple but effective. It also features some impressive instrumentation, especially the guitars. Its lyrics are an enjoyable blend of sadness and humor.",
+        "fuzzy_logic_feedback": {
+            "clarity": "4",
+            "satisfaction": "4",
+            "engagement": "5",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "2",
+            "satisfaction": "4",
+            "engagement": "3",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 33,
+            "tempo": 23,
+            "vocals": 0,
+            "instrumentation": 7,
+            "melodic": 6,
+            "lyrics_sentiment": -1
+        },
+        "fuzzy_logic_response": "'Hurt' by Nine Inch Nails is a dark and haunting track that explores themes of despair and self-reflection . the track, released in 1994, captures a very calm vibe that's perfect for those seeking relaxation .",
+        "llm_response": "The song's beat is repetitive and lacks any sort of momentum. The lyrics are melancholy and depressing, but the song has a light feel to it. The guitar and drumming are sparse and uneven, leaving the song feeling cluttered and unfinished.",
+        "fuzzy_logic_feedback": {
+            "clarity": "1",
+            "satisfaction": "5",
+            "engagement": "2",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "5",
+            "satisfaction": "3",
+            "engagement": "5",
+            "chatbot_type": "generative_ai"
+        }
+    },
+    {
+        "user_input": {
+            "energy": 19,
+            "tempo": 61,
+            "vocals": 3,
+            "instrumentation": 8,
+            "melodic": 9,
+            "lyrics_sentiment": 0
+        },
+        "fuzzy_logic_response": "'Rolling in the Deep' by Adele is a soulful track with deep, powerful vocals and emotional lyrics . the track, released in 2010, captures a calm vibe that's perfect for those seeking relaxation .",
+        "llm_response": "The vocals are powerful and uplifting and the song is beautifully written.",
+        "fuzzy_logic_feedback": {
+            "clarity": "1",
+            "satisfaction": "3",
+            "engagement": "1",
+            "chatbot_type": "fuzzy_logic"
+        },
+        "llm_feedback": {
+            "clarity": "3",
+            "satisfaction": "3",
+            "engagement": "4",
+            "chatbot_type": "generative_ai"
+        }
+    }
+]
