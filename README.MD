@@ -1,8 +1,8 @@
-# 🎵 Dynamic Music Review Generator
+# Dynamic Music Review Generator
 
 A hybrid AI system that analyzes song attributes using fuzzy logic and generates engaging music reviews with both rule-based and generative AI approaches.
 
-## 🌟 Features
+## Features
 
 - **Dual-Analysis Engine**:
   - Fuzzy logic evaluation of 7 musical dimensions
@@ -14,7 +14,7 @@ A hybrid AI system that analyzes song attributes using fuzzy logic and generates
 - **Smart Feedback System**:
   - Collects and stores user feedback
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 | Component               | Technology               |
 |-------------------------|--------------------------|
