@@ -8,6 +8,8 @@ import skfuzzy as fuzz
 import skfuzzy.control as ctrl
 import json
 import os
+import random
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 from transformers import pipeline
 from transformers import T5Tokenizer, T5ForConditionalGeneration
@@ -150,6 +152,76 @@ songs = [
         "genre": "Rock",
         "release_year": 1975,
         "description": "An epic rock ballad with dramatic shifts in tempo and mood."
+    },
+    {
+        "title": "Shape of You",
+        "artist": "Ed Sheeran",
+        "genre": "Pop",
+        "release_year": 2017,
+        "description": "A catchy pop song with tropical house influences and romantic lyrics."
+    },
+    {
+        "title": "Smells Like Teen Spirit",
+        "artist": "Nirvana",
+        "genre": "Grunge",
+        "release_year": 1991,
+        "description": "A defining grunge anthem with raw energy and rebellious lyrics."
+    },
+    {
+        "title": "Rolling in the Deep",
+        "artist": "Adele",
+        "genre": "Soul",
+        "release_year": 2010,
+        "description": "A powerful soul ballad about heartbreak and empowerment."
+    },
+    {
+        "title": "Uptown Funk",
+        "artist": "Mark Ronson ft. Bruno Mars",
+        "genre": "Funk",
+        "release_year": 2014,
+        "description": "A modern funk track with infectious energy and retro vibes."
+    },
+    {
+        "title": "Someone Like You",
+        "artist": "Adele",
+        "genre": "Ballad",
+        "release_year": 2011,
+        "description": "A emotional piano ballad about lost love and moving on."
+    },
+    {
+        "title": "Bad Guy",
+        "artist": "Billie Eilish",
+        "genre": "Electropop",
+        "release_year": 2019,
+        "description": "A dark, bass-heavy electropop song with whispery vocals."
+    },
+    {
+        "title": "Sweet Child O' Mine",
+        "artist": "Guns N' Roses",
+        "genre": "Rock",
+        "release_year": 1987,
+        "description": "A classic rock song with iconic guitar riffs and emotional vocals."
+    },
+    {
+        "title": "Despacito",
+        "artist": "Luis Fonsi ft. Daddy Yankee",
+        "genre": "Reggaeton",
+        "release_year": 2017,
+        "description": "A global reggaeton hit with infectious rhythm and romantic lyrics."
+    },
+    {
+        "title": "Havana",
+        "artist": "Camila Cabello",
+        "genre": "Pop",
+        "release_year": 2017,
+        "description": "A Latin-infused pop song with sultry vocals and tropical rhythms."
+    },
+    {
+        "title": "Thunderstruck",
+        "artist": "AC/DC",
+        "genre": "Hard Rock",
+        "release_year": 1990,
+        "description": "A high-voltage hard rock anthem with electrifying guitar riffs."
     }
 ]
 
@@ -291,6 +363,126 @@ def get_local_llm_response(song, mood_description, energy_input, tempo_input, vo
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
+def simulate_user_input():
+    """Generate random user input for testing"""
+    return {
+        'energy': random.randint(0, 100),
+        'tempo': random.randint(0, 100),
+        'vocals': random.randint(0, 10),
+        'instrumentation': random.randint(0, 10),
+        'melodic': random.randint(0, 10),
+        'lyrics_sentiment': random.choice([-1, 0, 1])
+    }
+
+def simulate_feedback(chatbot_type):
+    """Simulate user feedback for a chatbot response"""
+    feedback_options = {
+        "positive": ["Great analysis!", "Spot on!", "Perfect review!", "Exactly what I was thinking!"],
+        "neutral": ["It's okay.", "Not bad.", "Could be better.", "Decent review."],
+        "negative": ["Completely off!", "This doesn't make sense.", "Wrong analysis.", "Not helpful at all."]
+    }
+    
+    # Randomly choose feedback sentiment
+    sentiment = random.choice(["positive", "neutral", "negative"])
+    return random.choice(feedback_options[sentiment])
+
+def generate_fuzzy_response(song, user_input):
+    """Generate a fuzzy logic response for testing"""
+    # Add all input variables to the system
+    music_sim.input['energy'] = user_input['energy']
+    music_sim.input['tempo'] = user_input['tempo']
+    music_sim.input['vocals'] = user_input['vocals']
+    music_sim.input['instrumentation'] = user_input['instrumentation']
+    music_sim.input['melodic'] = user_input['melodic']
+    music_sim.input['lyrics_sentiment'] = user_input['lyrics_sentiment']
+    
+    # Compute fuzzy output
+    music_sim.compute()
+    mood_value = music_sim.output['mood']
+    
+    mood_description = get_linguistic_label('mood', mood_value)
+    energy_desc = get_linguistic_label('energy', user_input['energy'])
+    tempo_desc = get_linguistic_label('tempo', user_input['tempo'])
+    vocals_desc = get_linguistic_label('vocals', user_input['vocals'])
+    instr_desc = get_linguistic_label('instrumentation', user_input['instrumentation'])
+    melodic_desc = get_linguistic_label('melodic', user_input['melodic'])
+    sentiment_desc = get_linguistic_label('lyrics_sentiment', user_input['lyrics_sentiment'])
+
+    return (
+        f"🎶 '{song['title']}' by {song['artist']} feels {mood_description} overall. "
+        f"This {song['genre']} track is {song['description'].lower()}.\n\n"
+        f"🔋 Energy: {energy_desc}, 🎵 Tempo: {tempo_desc}.\n"
+        f"🎤 Vocals: {vocals_desc}, 🎹 Instrumentation: {instr_desc}.\n"
+        f"🎼 Melody: {melodic_desc}, 📝 Lyrics Sentiment: {sentiment_desc}."
+    )
+
+def generate_llm_response(song, user_input):
+    """Generate an LLM response for testing"""
+    # Add all input variables to the system
+    music_sim.input['energy'] = user_input['energy']
+    music_sim.input['tempo'] = user_input['tempo']
+    music_sim.input['vocals'] = user_input['vocals']
+    music_sim.input['instrumentation'] = user_input['instrumentation']
+    music_sim.input['melodic'] = user_input['melodic']
+    music_sim.input['lyrics_sentiment'] = user_input['lyrics_sentiment']
+    
+    # Compute fuzzy output
+    music_sim.compute()
+    mood_value = music_sim.output['mood']
+    
+    mood_description = get_linguistic_label('mood', mood_value)
+    
+    return get_local_llm_response(
+        song, mood_description, 
+        user_input['energy'], user_input['tempo'], 
+        user_input['vocals'], user_input['instrumentation'], 
+        user_input['melodic'], user_input['lyrics_sentiment'], 
+        mood_value
+    )
+
+def generate_responses_and_feedback():
+    """Generate simulated responses and feedback for testing"""
+    feedback_data = []
+
+    for i in range(12):  # Simulate 12 user inputs
+        print('User: ', i)
+        user_input = simulate_user_input()
+        print('Input: ', user_input)
+        song = random.choice(songs)
+        
+        # Generate responses
+        fuzzy_response = generate_fuzzy_response(song, user_input)
+        llm_response = generate_llm_response(song, user_input)
+
+        # Simulate feedback for both chatbots
+        feedback_data.append({
+            "song": song['title'],
+            "artist": song['artist'],
+            "user_input": user_input,
+            "fuzzy_logic_response": fuzzy_response,
+            "llm_response": llm_response,
+            "fuzzy_logic_feedback": simulate_feedback("fuzzy_logic"),
+            "llm_feedback": simulate_feedback("generative_ai")
+        })
+        print({
+            "song": song['title'],
+            "artist": song['artist'],
+            "user_input": user_input,
+            "fuzzy_logic_response": fuzzy_response,
+            "llm_response": llm_response,
+            "fuzzy_logic_feedback": simulate_feedback("fuzzy_logic"),
+            "llm_feedback": simulate_feedback("generative_ai")
+        })
+        print('Finished processing user: ', i)
+    
+    # Save feedback data to a JSON file
+    output_filename = f"feedback_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    with open(output_filename, "w") as f:
+        json.dump(feedback_data, f, indent=4)
+
+    print(f"Feedback data saved to {output_filename}")
+    return feedback_data
+
 # Homepage
 @app.route('/')
 def home():
@@ -336,13 +528,13 @@ def chat():
 
     # Generate fuzzy chatbot response
     raw_fuzzy_response = (
-    f"🎶 '{selected_song['title']}' by {selected_song['artist']} feels {mood_description} overall. "
-    f"This {selected_song['genre']} track, released in {selected_song['release_year']}, is {selected_song['description'].lower()}.\n\n"
-    f"🔋 **Energy:** {energy_desc.capitalize()}, 🎵 **Tempo:** {tempo_desc.replace('_', ' ').capitalize()}.\n"
-    f"🎤 **Vocals:** {vocals_desc.replace('_', ' ')}, 🎹 **Instrumentation:** {instr_desc.replace('_', ' ')}.\n"
-    f"🎼 **Melody:** {melodic_desc.replace('_', ' ')}, 📝 **Lyrics Sentiment:** {sentiment_desc}.\n\n"
-    f"💡 A harshly subdued mix of sound and sentiment, this track captures a {mood_description} vibe that's "
-    f"perfect for those seeking {('relaxation' if mood_value < 40 else 'motivation' if mood_value < 70 else 'intensity')}."
+        f"🎶 '{selected_song['title']}' by {selected_song['artist']} feels {mood_description} overall. "
+        f"This {selected_song['genre']} track, released in {selected_song['release_year']}, is {selected_song['description'].lower()}.\n\n"
+        f"🔋 **Energy:** {energy_desc.capitalize()}, 🎵 **Tempo:** {tempo_desc.replace('_', ' ').capitalize()}.\n"
+        f"🎤 **Vocals:** {vocals_desc.replace('_', ' ')}, 🎹 **Instrumentation:** {instr_desc.replace('_', ' ')}.\n"
+        f"🎼 **Melody:** {melodic_desc.replace('_', ' ')}, 📝 **Lyrics Sentiment:** {sentiment_desc}.\n\n"
+        f"💡 A harshly subdued mix of sound and sentiment, this track captures a {mood_description} vibe that's "
+        f"perfect for those seeking {('relaxation' if mood_value < 40 else 'motivation' if mood_value < 70 else 'intensity')}."
     )
 
     fuzzy_response = summarize_fuzzy_response(raw_fuzzy_response)
@@ -368,6 +560,18 @@ def feedback():
             json.dump(feedback_data, f, indent=4)
 
         return jsonify({"message": "Feedback saved successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Generate test data route
+@app.route('/generate_test_data', methods=['GET'])
+def generate_test_data():
+    try:
+        feedback_data = generate_responses_and_feedback()
+        return jsonify({
+            "message": "Test data generated successfully",
+            "data": feedback_data
+        }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
